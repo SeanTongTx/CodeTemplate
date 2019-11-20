@@ -4,61 +4,63 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-
-public abstract class CodeGenerator : SeanLibEditor
+namespace SeanLib.CodeTemplate
 {
-    public string Dir;
-    public List<CodeTemplate> templates = new List<CodeTemplate>();
-    public override void OnGUI()
+    public abstract class CodeGenerator : SeanLibEditor
     {
-        base.OnGUI();
-        Dir = OnGUIUtility.SaveFolderPanel("SaveDirectory");
-        OnDraw();
-        if(GUILayout.Button("Generate"))
+        public string Dir;
+        public List<CodeTemplate> templates = new List<CodeTemplate>();
+        public override void OnGUI()
         {
-            OnGenerate();
-        }
+            base.OnGUI();
+            Dir = OnGUIUtility.SaveFolderPanel("SaveDirectory");
+            OnDraw();
+            if (GUILayout.Button("Generate"))
+            {
+                OnGenerate();
+            }
 
-    }
-    public Dictionary<string, string> KeyValues = new Dictionary<string, string>();
-    public override void OnEnable(SeanLibManager drawer)
-    {
-        base.OnEnable(drawer);
-        foreach (var template in templates)
+        }
+        public Dictionary<string, string> KeyValues = new Dictionary<string, string>();
+        public override void OnEnable(SeanLibManager drawer)
         {
-            foreach (var key in template.KeyWords)
+            base.OnEnable(drawer);
+            foreach (var template in templates)
             {
-                KeyValues[key] = "";
+                foreach (var key in template.KeyWords)
+                {
+                    KeyValues[key] = "";
+                }
             }
         }
-    }
-    public virtual void OnDraw()
-    {
-        foreach (var template in templates)
+        public virtual void OnDraw()
         {
-            GUILayout.BeginVertical(SeanLibEditor.styles.Box);
-            EditorGUILayout.LabelField(template.TemplateName,EditorStyles.boldLabel);
-            foreach (var key in template.KeyWords)
+            foreach (var template in templates)
             {
-                KeyValues[key]=EditorGUILayout.TextField(key, KeyValues[key]);
-            }
-            GUILayout.EndVertical();
-            EditorGUILayout.Space();
-        }
-    }
-    public virtual void OnGenerate()
-    {
-        foreach (var item in KeyValues)
-        {
-            if(item.Value.IsNullOrEmpty())
-            {
-                throw new System.Exception("Values error");
+                GUILayout.BeginVertical(SeanLibEditor.styles.Box);
+                EditorGUILayout.LabelField(template.TemplateName, EditorStyles.boldLabel);
+                foreach (var key in template.KeyWords)
+                {
+                    KeyValues[key] = EditorGUILayout.TextField(key, KeyValues[key]);
+                }
+                GUILayout.EndVertical();
+                EditorGUILayout.Space();
             }
         }
-        foreach (var template in templates)
+        public virtual void OnGenerate()
         {
-            template.GenerateFile(KeyValues, Dir);
+            foreach (var item in KeyValues)
+            {
+                if (item.Value.IsNullOrEmpty())
+                {
+                    throw new System.Exception("Values error");
+                }
+            }
+            foreach (var template in templates)
+            {
+                template.GenerateFile(KeyValues, Dir);
+            }
+            AssetDatabase.Refresh();
         }
-        AssetDatabase.Refresh();
     }
 }

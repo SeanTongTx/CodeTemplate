@@ -2,9 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-[CustomSeanLibEditor("CodeTemplate")]
-public class CodeTemplateDoc : EditorMarkDownWindow
+namespace SeanLib.CodeTemplate
 {
-    public override string RelativePath => "../../Doc";
+
+    [CustomSeanLibEditor("CodeTemplate")]
+    public class CodeTemplateDoc : EditorMarkDownWindow
+    {
+        public override string RelativePath => "../../Doc";
+    }
 }
