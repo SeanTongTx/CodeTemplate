@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SeanLib.CodeTemplate
 {
@@ -7,10 +8,17 @@ namespace SeanLib.CodeTemplate
         string TemplateName { get; }
         string Template { get; }
 
-        string[] KeyWords { get; }
+        KeyWord[] KeyWords { get; }
 
         string Generate(Dictionary<string, string> KeyValues);
 
         void Generate(Dictionary<string, string> KeyValues,string FilePath);
     }
+    [Serializable]
+    public struct KeyWord
+    {
+        public string key;
+        public string comment;
+    }
+
 }

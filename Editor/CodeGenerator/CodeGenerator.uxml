@@ -1,0 +1,17 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+  <ui:SplitPannel index="0" init-size="500" orientation="horizontal">
+    <ui:VisualElement class="generator-view"  >
+      <ui:IMGUIContainer name="savedir-view" style="height:22px;"/>
+      <ui:ScrollView style="flex-grow:1;">
+        <ui:IMGUIContainer name="GUIContainer"/>
+      </ui:ScrollView>
+      <ui:Button name="btn-generate" text="Generate"/>
+    </ui:VisualElement>
+    <ui:VisualElement>
+      <ui:Label text="Preview:" style="background-color: rgba(156, 156, 156, 255);-unity-font-style:Bold;"/>
+      <ui:ScrollView>
+      <ui:TextField readonly="true" text="try press preview button.." name="Preview-text" class="preview-text"/>
+      </ui:ScrollView>
+    </ui:VisualElement>
+  </ui:SplitPannel>
+</ui:UXML>

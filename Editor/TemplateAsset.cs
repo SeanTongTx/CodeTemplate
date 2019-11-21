@@ -1,49 +1,56 @@
-﻿using System.Collections;
+﻿using SeanLib.Core;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using UnityEditor;
 using UnityEngine;
 namespace SeanLib.CodeTemplate
 {
-    //[CreateAssetMenu(fileName = "Template", menuName = "CodeTemplate/NewTemplate",order =1000)]
-    public abstract class TemplateAsset : ScriptableObject, ITemplate
+
+    [CreateAssetMenu(fileName = "General", menuName = "CodeTemplate/New General Template", order = 1000)]
+    public class TemplateAsset : ScriptableObject, ITemplate
     {
         [SerializeField]
-        [Multiline]
+        [Multiline(30)]
         private string template;
         [SerializeField]
-        private string[] keyWords;
+        private KeyWord[] keyWords;
 
         public string TemplateName => name;
 
         public string Template => template;
 
-        public string[] KeyWords => keyWords;
+        public KeyWord[] KeyWords => keyWords;
 
         public virtual string Generate(Dictionary<string, string> KeyValues)
         {
-            return Generate(this.Template, KeyValues);
-        }
-
-        public virtual void Generate(Dictionary<string, string> KeyValues, string FilePath)
-        {
-            throw new System.Exception("Un handled");
-        }
-
-        /// <summary>
-        /// 生成字符
-        /// </summary>
-        /// <param name="KeyValues"></param>
-        /// <returns></returns>
-        protected virtual string Generate(string template, Dictionary<string, string> KeyValues)
-        {
-            StringBuilder sb = new StringBuilder(template);
+            StringBuilder sb = new StringBuilder(Template);
             for (int i = 0; i < KeyWords.Length; i++)
             {
-                if (KeyValues.ContainsKey(KeyWords[i]))
-                    sb.Replace(KeyWords[i], KeyValues[KeyWords[i]]);
+                if (KeyValues.ContainsKey(KeyWords[i].key))
+                    sb.Replace(KeyWords[i].key, KeyValues[KeyWords[i].key]);
             }
             return sb.ToString();
         }
 
+        public virtual void Generate(Dictionary<string, string> KeyValues, string FilePath)
+        {
+            var codeStr = Generate(KeyValues);
+            StringBuilder sb = new StringBuilder(FilePath);
+            for (int i = 0; i < KeyWords.Length; i++)
+            {
+                sb.Replace(KeyWords[i].key, KeyValues[KeyWords[i].key]);
+            }
+            var filePath = sb.ToString();
+            FileTools.WriteAllText(filePath, codeStr);
+            AssetDatabase.Refresh();
+        }
+
+        public static T LoadTemplateAsset<T>(string search)where T: TemplateAsset
+        {
+            var templatePath = AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets(search)[0]);
+            var TemplateAsset = AssetDatabase.LoadAssetAtPath<T>(templatePath);
+            return TemplateAsset;
+        }
     }
 }

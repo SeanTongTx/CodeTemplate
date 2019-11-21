@@ -3,20 +3,22 @@ using System.Collections.Generic;
 using System.Text;
 namespace SeanLib.CodeTemplate
 {
-    public abstract class CodeTemplate
+    public abstract class CodeTemplate:ITemplate
     {
+        public string TemplateName => templateName;
+
         public CodeTemplate()
         {
 
         }
         public CodeTemplate(string TemplateName)
         {
-            this.TemplateName = TemplateName;
+            this.templateName = TemplateName;
         }
         /// <summary>
         /// 模板名称
         /// </summary>
-        public string TemplateName;
+        public string templateName;
         /// <summary>
         /// 文件生成路径(子路径)
         /// </summary>
@@ -28,14 +30,8 @@ namespace SeanLib.CodeTemplate
         /// <summary>
         /// 模板中的关键字
         /// </summary>
-        public abstract string[] KeyWords { get; }
-        public Dictionary<string, string> KeyWordsComment = new Dictionary<string, string>();
-        public string GetComment(string key)
-        {
-            string comment = null;
-            KeyWordsComment.TryGetValue(key, out comment);
-            return comment;
-        }
+        public abstract KeyWord[] KeyWords { get; }
+
         /// <summary>
         /// 生成字符
         /// </summary>
@@ -46,8 +42,8 @@ namespace SeanLib.CodeTemplate
             StringBuilder sb = new StringBuilder(template);
             for (int i = 0; i < KeyWords.Length; i++)
             {
-                if (KeyValues.ContainsKey(KeyWords[i]))
-                    sb.Replace(KeyWords[i], KeyValues[KeyWords[i]]);
+                if (KeyValues.ContainsKey(KeyWords[i].key))
+                    sb.Replace(KeyWords[i].key, KeyValues[KeyWords[i].key]);
             }
             return sb.ToString();
         }
@@ -71,10 +67,15 @@ namespace SeanLib.CodeTemplate
             StringBuilder sb = new StringBuilder(FilePath);
             for (int i = 0; i < KeyWords.Length; i++)
             {
-                sb.Replace(KeyWords[i], KeyValues[KeyWords[i]]);
+                sb.Replace(KeyWords[i].key, KeyValues[KeyWords[i].key]);
             }
             var filePath = sb.ToString();
             FileTools.WriteAllText(DirRoot + "/" + filePath, codeStr);
+        }
+
+        public void Generate(Dictionary<string, string> KeyValues, string FilePath)
+        {
+            GenerateFile(KeyValues, FilePath);
         }
     }
 }

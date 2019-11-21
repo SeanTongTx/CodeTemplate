@@ -7,13 +7,18 @@ using UnityEditor.ProjectWindowCallback;
 using UnityEngine;
 namespace SeanLib.CodeTemplate
 {
-    [CreateAssetMenu(fileName = "Template", menuName = "CodeTemplate/New C# Template", order = 1000)]
+    //[CreateAssetMenu(fileName = "Template", menuName = "CodeTemplate/New C# Template", order = 1000)]
     public class CsCodeTemplate : TemplateAsset
     {
         private class ClassEndNameAction : EndNameEditAction
         {
             public override void Action(int instanceId, string pathName, string resourceFile)
             {
+                var csTemplate = AssetDatabase.LoadAssetAtPath<CsCodeTemplate>(resourceFile);
+                var ClassName = Path.GetFileNameWithoutExtension(pathName);
+                var code = csTemplate.Generate(new Dictionary<string, string>() { { "#CS_CLASS_NAME#", ClassName } });
+                FileTools.WriteAllText(pathName, code);
+                AssetDatabase.Refresh();
             }
         }
         private class InterfaceEndNameAction : EndNameEditAction

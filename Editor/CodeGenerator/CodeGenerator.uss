@@ -1,0 +1,24 @@
+Label:hover
+{
+	color:rgb(255,255,255);
+}
+/*split pannel*/
+/*默认 分割面板是弹性100%填充父节点*/
+SplitPannel
+{
+	flex-grow:1;
+}
+.generator-view {
+	min-width:300;
+	max-width:4096;	
+	flex-grow:1;
+}
+.preview-text
+{
+	flex-grow:1;
+}
+.preview-text TextInput
+{
+	-unity-text-align: upper-left;
+	background-color: rgba(206, 206, 206, 255);
+}

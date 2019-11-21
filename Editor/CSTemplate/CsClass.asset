@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   template: "\rpublic class #CS_CLASS_NAME#\r\n{\r\n}"
   keyWords:
-  - '#CS_CLASS_NAME#'
+  - key: '#CS_CLASS_NAME#'
+    comment: "\u7C7B\u540D"
