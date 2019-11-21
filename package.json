@@ -9,6 +9,6 @@
   ],
   "category": "Template",
   "dependencies": {
-    "com.seanlib.foundation": "1.0.0"
+    "com.seanlib.foundation": "1.0.1"
   }
 }
