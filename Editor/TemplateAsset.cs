@@ -43,7 +43,8 @@ namespace SeanLib.CodeTemplate
             }
             var filePath = sb.ToString();
             FileTools.WriteAllText(filePath, codeStr);
-            AssetDatabase.Refresh();
+            //AssetDatabase.Refresh();
+            //自行刷新
         }
 
         public static T LoadTemplateAsset<T>(string search)where T: TemplateAsset

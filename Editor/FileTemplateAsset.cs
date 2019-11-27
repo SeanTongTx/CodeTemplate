@@ -10,6 +10,11 @@ namespace SeanLib.CodeTemplate
     {
         [SerializeField]
         private string FileNameTemplate;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="KeyValues"></param>
+        /// <param name="FilePath">dir</param>
         public override void Generate(Dictionary<string, string> KeyValues, string FilePath)
         {
             FilePath = Path.Combine(FilePath, FileNameTemplate);

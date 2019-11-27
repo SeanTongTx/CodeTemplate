@@ -1,6 +1,5 @@
 ﻿using EditorPlus;
 using SeanLib.Core;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -13,17 +12,38 @@ namespace SeanLib.CodeTemplate
         public string Dir;
         public List<ITemplate> templates = new List<ITemplate>();
         public Dictionary<string, string> UserInputKV = new Dictionary<string, string>();
-
+        public TextField Preview;
         protected override bool UseIMGUI => false;
-        protected override string UXML => "../CodeGenerator";
+        protected virtual bool DefaultLayout => true;
         public override void EnableUIElements()
         {
-            if (!string.IsNullOrEmpty(UXML))
+            if (DefaultLayout)
             {
-                var editorContent = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(PathTools.RelativeAssetPath(typeof(CodeGenerator), UXML + ".uxml"));
-                editorContent_styles = AssetDatabase.LoadAssetAtPath<StyleSheet>(PathTools.RelativeAssetPath(typeof(CodeGenerator), UXML + ".uss"));
+                var editorContent = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(PathTools.RelativeAssetPath(typeof(CodeGenerator), "../CodeGenerator.uxml"));
+                editorContent_styles = AssetDatabase.LoadAssetAtPath<StyleSheet>(PathTools.RelativeAssetPath(typeof(CodeGenerator), "../CodeGenerator.uss"));
                 window.EditorContent.styleSheets.Add(editorContent_styles);
                 editorContent.CloneTree(window.EditorContent);
+                //SetupElements
+                var SaveDirGUI = this.EditorContent_Elements.Q<IMGUIContainer>("savedir-view");
+                SaveDirGUI.onGUIHandler = () =>
+                {
+                    Dir = OnGUIUtility.SaveFolderPanel("SaveDirectory");
+                };
+                var LegcyGUI = this.EditorContent_Elements.Q<IMGUIContainer>("GUIContainer");
+                LegcyGUI.onGUIHandler = OnGUI;
+                var genrateButton = this.EditorContent_Elements.Q<Button>("btn-generate");
+                genrateButton.clickable.clicked += OnGenerate;
+
+                Preview = this.EditorContent_Elements.Q<TextField>("Preview-text");
+
+                foreach (var template in templates)
+                {
+                    InitTemplate(template);
+                }
+            }
+            else
+            {
+                base.EnableUIElements();
             }
         }
 
@@ -34,28 +54,6 @@ namespace SeanLib.CodeTemplate
                 UserInputKV[key.key] = string.Empty;
             }
         }
-        public TextField Preview;
-        public override void OnEnable(SeanLibManager drawer)
-        {
-            base.OnEnable(drawer);
-            var SaveDirGUI = this.EditorContent_Elements.Q<IMGUIContainer>("savedir-view");
-            SaveDirGUI.onGUIHandler = () =>
-            {
-                Dir = OnGUIUtility.SaveFolderPanel("SaveDirectory");
-            };
-            var LegcyGUI= this.EditorContent_Elements.Q<IMGUIContainer>("GUIContainer");
-            LegcyGUI.onGUIHandler = OnGUI;
-            var genrateButton = this.EditorContent_Elements.Q<Button>("btn-generate");
-            genrateButton.clickable.clicked += OnGenerate;
-
-            Preview = this.EditorContent_Elements.Q<TextField>("Preview-text");
-
-            foreach (var template in templates)
-            {
-                InitTemplate(template);
-            }
-        }
-
         public override void OnGUI()
         {
             base.OnGUI();
