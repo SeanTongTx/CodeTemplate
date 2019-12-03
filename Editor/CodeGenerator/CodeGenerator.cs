@@ -15,7 +15,7 @@ namespace SeanLib.CodeTemplate
         public TextField Preview;
         protected override bool UseIMGUI => false;
         protected virtual bool DefaultLayout => true;
-        public override void EnableUIElements()
+        public override void SetupUIElements()
         {
             if (DefaultLayout)
             {
@@ -43,7 +43,7 @@ namespace SeanLib.CodeTemplate
             }
             else
             {
-                base.EnableUIElements();
+                base.SetupUIElements();
             }
         }
 
@@ -99,5 +99,20 @@ namespace SeanLib.CodeTemplate
             }
             AssetDatabase.Refresh();
         }
+
+        #region User Input
+        public virtual void SetInput(string key, string value)
+        {
+            UserInputKV[key] = value;
+        }
+        public virtual string GetInput(string key)
+        {
+            if (UserInputKV.TryGetValue(key, out string s))
+            {
+                return s;
+            }
+            return string.Empty;
+        }
+        #endregion
     }
 }

@@ -1,4 +1,5 @@
-﻿using SeanLib.Core;
+﻿using EditorPlus;
+using SeanLib.Core;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -49,9 +50,7 @@ namespace SeanLib.CodeTemplate
 
         public static T LoadTemplateAsset<T>(string search)where T: TemplateAsset
         {
-            var templatePath = AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets(search)[0]);
-            var TemplateAsset = AssetDatabase.LoadAssetAtPath<T>(templatePath);
-            return TemplateAsset;
+            return AssetDBHelper.LoadAsset<T>(search);
         }
     }
 }

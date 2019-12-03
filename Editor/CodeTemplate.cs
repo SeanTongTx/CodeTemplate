@@ -5,6 +5,22 @@ namespace SeanLib.CodeTemplate
 {
     public abstract class CodeTemplate:ITemplate
     {
+        /// <summary>
+        /// 生成字符
+        /// </summary>
+        /// <param name="UserInput"></param>
+        /// <returns></returns>
+        public static string Generate(string template, KeyWord[] KeyWords, Dictionary<string, string> UserInput)
+        {
+            StringBuilder sb = new StringBuilder(template);
+            for (int i = 0; i < KeyWords.Length; i++)
+            {
+                if (UserInput.ContainsKey(KeyWords[i].key))
+                    sb.Replace(KeyWords[i].key, UserInput[KeyWords[i].key]);
+            }
+            return sb.ToString();
+        }
+        ///////////////////////////
         public string TemplateName => templateName;
 
         public CodeTemplate()
@@ -37,24 +53,9 @@ namespace SeanLib.CodeTemplate
         /// </summary>
         /// <param name="KeyValues"></param>
         /// <returns></returns>
-        public virtual string Generate(string template, Dictionary<string, string> KeyValues)
-        {
-            StringBuilder sb = new StringBuilder(template);
-            for (int i = 0; i < KeyWords.Length; i++)
-            {
-                if (KeyValues.ContainsKey(KeyWords[i].key))
-                    sb.Replace(KeyWords[i].key, KeyValues[KeyWords[i].key]);
-            }
-            return sb.ToString();
-        }
-        /// <summary>
-        /// 生成字符
-        /// </summary>
-        /// <param name="KeyValues"></param>
-        /// <returns></returns>
         public virtual string Generate(Dictionary<string, string> KeyValues)
         {
-            return Generate(this.Template, KeyValues);
+            return Generate(this.Template,KeyWords, KeyValues);
         }
         /// <summary>
         /// 生成文件
