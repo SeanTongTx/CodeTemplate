@@ -1,5 +1,6 @@
 ﻿using EditorPlus;
 using SeanLib.Core;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -11,11 +12,17 @@ namespace SeanLib.CodeTemplate
     [CreateAssetMenu(fileName = "General", menuName = "CodeTemplate/New General Template", order = 1000)]
     public class TemplateAsset : ScriptableObject, ITemplate
     {
+        [Obsolete("Use AssetDBHelper.LoadAsset instead ")]
+        public static T LoadTemplateAsset<T>(string search) where T : TemplateAsset
+        {
+            return AssetDBHelper.LoadAsset<T>(search);
+        }
+
         [SerializeField]
         [Multiline(30)]
-        private string template;
+        protected string template;
         [SerializeField]
-        private KeyWord[] keyWords;
+        protected KeyWord[] keyWords;
 
         public string TemplateName => name;
 
@@ -23,34 +30,57 @@ namespace SeanLib.CodeTemplate
 
         public KeyWord[] KeyWords => keyWords;
 
-        public virtual string Generate(Dictionary<string, string> KeyValues)
+
+        /// <summary>
+        /// 将用户输入合并到生成器中
+        /// </summary>
+        /// <param name="UserInputs"></param>
+        protected virtual void MergeValues(List<KeyWordValue> UserInputs)
         {
-            StringBuilder sb = new StringBuilder(Template);
-            for (int i = 0; i < KeyWords.Length; i++)
+            var enumerator = UserInputs.GetEnumerator();
+            while (enumerator.MoveNext())
             {
-                if (KeyValues.ContainsKey(KeyWords[i].key))
-                    sb.Replace(KeyWords[i].key, KeyValues[KeyWords[i].key]);
+                SetValue(enumerator.Current.key, enumerator.Current.value);
             }
-            return sb.ToString();
         }
 
-        public virtual void Generate(Dictionary<string, string> KeyValues, string FilePath)
+        public virtual string Generate(List<KeyWordValue> UserInputs)
         {
-            var codeStr = Generate(KeyValues);
-            StringBuilder sb = new StringBuilder(FilePath);
-            for (int i = 0; i < KeyWords.Length; i++)
-            {
-                sb.Replace(KeyWords[i].key, KeyValues[KeyWords[i].key]);
-            }
-            var filePath = sb.ToString();
+            MergeValues(UserInputs);
+            return Generater.Generate(Template, KeyWords, Values);
+        }
+
+        public virtual void Generate(List<KeyWordValue> UserInputs, string FilePath)
+        {
+            MergeValues(UserInputs);
+            var codeStr = Generater.Generate(Template, KeyWords, Values);
+
+            var filePath = Generater.Generate(FilePath, KeyWords, Values);
+
             FileTools.WriteAllText(filePath, codeStr);
             //AssetDatabase.Refresh();
             //自行刷新
         }
 
-        public static T LoadTemplateAsset<T>(string search)where T: TemplateAsset
+        #region 输入参数缓存
+        /// <summary>
+        /// 生成用缓存
+        /// </summary>
+        [HideInInspector]
+        [SerializeField]
+        public KeyWordDic ValueDic = new KeyWordDic();
+        public List<KeyWordValue> Values => ValueDic.Values;
+
+        public string GetValue(string key)
         {
-            return AssetDBHelper.LoadAsset<T>(search);
+            return ValueDic.GetValue(key);
         }
+
+        public void SetValue(string key, string value)
+        {
+            ValueDic.SetValue(key, value);
+        }
+        #endregion
+
     }
 }

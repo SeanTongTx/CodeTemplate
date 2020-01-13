@@ -12,12 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c87e68a5df40834d84162143c8093c4, type: 3}
   m_Name: SeanLibEditorCsTemplate
   m_EditorClassIdentifier: 
-  template: "\rusing EditorPlus;\r\nusing SeanLib.Core;\r\nusing UnityEditor;\r\nusing
-    UnityEngine;\r\nusing UnityEngine.UIElements;\r\n\nnamespace SeanLib.CodeTemplate\r\n{\r\n   
-    [CustomSeanLibEditor(\"#CLASS_NAME#\")]\n    public class #CLASS_NAME# : SeanLibEditor\r\n   
-    {\r\n        protected override bool UseIMGUI => false;\r\n        protected
-    override string UXML => \"../#CLASS_NAME#\";\r\n    }\r\n}"
+  template: "\r\nusing EditorPlus;\r\nusing SeanLib.Core;\r\nusing UnityEditor;\r\nusing
+    UnityEngine;\r\nusing UnityEngine.UIElements;\r\n\r\nnamespace SeanLib.CodeTemplate\r\n{\r\n
+    \   [CustomSeanLibEditor(\"#CLASS_NAME#\")]\r\n    public class #CLASS_NAME# :
+    SeanLibEditor\r\n    {\r\n        protected override bool UseIMGUI => false;\r\n
+    \       protected override ElementsFileAsset FileAsset => new ElementsFileAsset()\r\n
+    \       {\r\n            BaseType = this.GetType(),\r\n            UXML = \"../#CLASS_NAME#.uxml\",\r\n
+    \           USS = \"../#CLASS_NAME#.uss\"\r\n        };\r\n    }\r\n}"
   keyWords:
   - key: '#CLASS_NAME#'
     comment: "\u6587\u4EF6\u540D"
+    Flags: 4
   FileNameTemplate: '#CLASS_NAME#.cs'

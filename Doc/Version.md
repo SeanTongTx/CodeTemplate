@@ -1,4 +1,9 @@
 ﻿# CodeTemplate/Version
+## Preview 191227
+
+修改了模板内部数据存储结构，使其支持unity序列化。
+相应的修改了模板类接口。
+增加了EditorMD模板。
 
 ## Preview 191126
 

@@ -16,4 +16,5 @@ MonoBehaviour:
   keyWords:
   - key: '#CLASS_NAME#'
     comment: "\u6587\u4EF6\u540D"
+    Flags: 4
   FileNameTemplate: '#CLASS_NAME#.uss'

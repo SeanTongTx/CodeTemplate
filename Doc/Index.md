@@ -1,7 +1,7 @@
-﻿# CodeTemplate <color="orange">(Preview)</color>
+# CodeTemplate <color="orange">(Preview)</color>
 ## 以模板的方式生成代码和文件
 ### 在模板中定义特殊关键字，最后替换完成。 
-!(img/1.jpg)
+![](img/1.jpg)
 
 >Version
 

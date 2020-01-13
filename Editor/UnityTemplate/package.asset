@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7ccef84f9f0e464bac7d1f0fdb5fa85, type: 3}
+  m_Name: package
+  m_EditorClassIdentifier: 
+  template: "{\r\n\t\"name\": \"com.company.product\",\r\n\t\"version\": \"0.0.1\",\r\n\t\"unity\":
+    \"2018.4\",\r\n\t\"displayName\": \"Product Name\",\r\n\t\"category\": \"Product
+    Category\",\r\n\t\"description\": \"This is a package.json demo.\",\r\n\t\"dependencies\":
+    {\r\n\t\t\"name\": \"version\"\r\n\t},\r\n\t\"keywords\": [\r\n\t\t\"Example\"\r\n\t],\r\n\t\"author\":
+    {\r\n\t\t\"name\": \"Author Name\",\r\n\t\t\"email\": \"author@company.com\",\r\n\t\t\"url\":
+    \"https://www.company.com/author\"\r\n\t},\r\n\t\"relatedPackages\": {\r\n\t\t\"name\":
+    \"version\"\r\n\t}\r\n}\r\n"
+  keyWords: []

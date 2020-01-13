@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0f15027c060533a4fa1a549f8c82e746, type: 3}
-  m_Name: CsInterface
+  m_Name: CsSturct
   m_EditorClassIdentifier: 
-  template: "\rpublic class #CS_INTERFACE_NAME#\r\n{\r\n}"
+  template: "using System;\r\n\n[Serializable]\r\npublic struct #CS_STRUCT_NAME#\r\n{\r\n}"
   keyWords:
-  - key: '#CS_INTERFACE_NAME#'
-    comment: "\u63A5\u53E3\u540D\u79F0"
+  - key: '#CS_STRUCT_NAME#'
+    comment: "\u7ED3\u6784\u4F53\u540D\u79F0"
     Flags: 4

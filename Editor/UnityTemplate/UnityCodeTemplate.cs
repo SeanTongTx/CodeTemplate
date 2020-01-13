@@ -1,32 +1,34 @@
-﻿using SeanLib.Core;
+﻿using EditorPlus;
+using SeanLib.Core;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEditor.ProjectWindowCallback;
 using UnityEngine;
+
 namespace SeanLib.CodeTemplate
 {
     //[CreateAssetMenu(fileName = "Template", menuName = "CodeTemplate/New Unity Template", order = 1000)]
     public class UnityCodeTemplate : TemplateAsset
     {
-        private class ClassEndNameAction : EndNameEditAction
+    }
+    public partial class CustomMenuItems
+    {
+        [MenuItem("Assets/Create/CodeTemplate/Unity/ScriptableObject", priority = 0)]
+        public static void CreateScriptableObject()
         {
-            public override void Action(int instanceId, string pathName, string resourceFile)
-            {
-                var csTemplate = AssetDatabase.LoadAssetAtPath<UnityCodeTemplate>(resourceFile);
-                var ClassName = Path.GetFileNameWithoutExtension(pathName);
-                var code = csTemplate.Generate(new Dictionary<string, string>() { { "#CS_CLASS_NAME#", ClassName } });
-                FileTools.WriteAllText(pathName, code);
-                AssetDatabase.Refresh();
-            }
+            ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0, new EndNameActions.SetFileName2FirstKeyWord(), "NewScriptableObject.cs", EditorGUIUtility.FindTexture("cs Script Icon"), "ScriptableObject t:UnityCodeTemplate");
         }
-        [MenuItem("Assets/Create/CodeTemplate/ScriptableObject", priority = 0)]
-        public static void CreateInterface()
+        [MenuItem("Assets/Create/CodeTemplate/Unity/CustomEditor", priority = 0)]
+        public static void CreateCustomEditor()
         {
-            var templatePath = AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("ScriptableObject t:UnityCodeTemplate")[0]);
-
-            ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0, new ClassEndNameAction(), "NewScriptableObject.cs", EditorGUIUtility.FindTexture("cs Script Icon"), templatePath);
+            ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0, new EndNameActions.SetFileName2FirstKeyWord(), "NewCustomEditor.cs", EditorGUIUtility.FindTexture("cs Script Icon"), "CustomEditor t:UnityCodeTemplate");
+        }
+        [MenuItem("Assets/Create/CodeTemplate/Unity/pacakgeConfig", priority = 0)]
+        public static void CreatePackageJson()
+        {
+            ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0, new EndNameActions.FileName(), "package.json", EditorGUIUtility.FindTexture("TextAsset Icon"), "package t: templateasset");
         }
     }
 }

@@ -11,7 +11,7 @@ namespace SeanLib.CodeTemplate
     {
         public string Dir;
         public List<ITemplate> templates = new List<ITemplate>();
-        public Dictionary<string, string> UserInputKV = new Dictionary<string, string>();
+        public KeyWordDic UserInputKV = new KeyWordDic();
         public TextField Preview;
         protected override bool UseIMGUI => false;
         protected virtual bool DefaultLayout => true;
@@ -51,7 +51,7 @@ namespace SeanLib.CodeTemplate
         {
             foreach (var key in template.KeyWords)
             {
-                UserInputKV[key.key] = string.Empty;
+                UserInputKV.SetValue(key.key, string.Empty);
             }
         }
         public override void OnGUI()
@@ -64,7 +64,7 @@ namespace SeanLib.CodeTemplate
                     EditorGUILayout.LabelField(template.TemplateName, EditorStyles.boldLabel);
                     foreach (var keyword in template.KeyWords)
                     {
-                        UserInputKV[keyword.key] = EditorGUILayout.TextField(keyword.comment, UserInputKV[keyword.key]);
+                        UserInputKV.SetValue(keyword.key, EditorGUILayout.TextField(keyword.comment, UserInputKV.GetValue(keyword.key)));
                     }
                     PreviewButton(template);
                 }
@@ -79,23 +79,16 @@ namespace SeanLib.CodeTemplate
                 GUILayout.FlexibleSpace();
                 if (GUILayout.Button("Preview"))
                 {
-                    Preview.value = template.Generate(UserInputKV);
+                    Preview.value = template.Generate(UserInputKV.Values);
                 }
             }
             EditorGUILayout.EndHorizontal();
         }
         public virtual void OnGenerate()
         {
-            foreach (var item in UserInputKV)
-            {
-                if (item.Value.IsNullOrEmpty())
-                {
-                    throw new System.Exception("Values error");
-                }
-            }
             foreach (var template in templates)
             {
-                template.Generate(UserInputKV, Dir);
+                template.Generate(UserInputKV.Values, Dir);
             }
             AssetDatabase.Refresh();
         }
@@ -103,15 +96,11 @@ namespace SeanLib.CodeTemplate
         #region User Input
         public virtual void SetInput(string key, string value)
         {
-            UserInputKV[key] = value;
+            UserInputKV.SetValue(key,value);
         }
         public virtual string GetInput(string key)
         {
-            if (UserInputKV.TryGetValue(key, out string s))
-            {
-                return s;
-            }
-            return string.Empty;
+            return UserInputKV.GetValue(key);
         }
         #endregion
     }

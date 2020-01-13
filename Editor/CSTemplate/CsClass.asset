@@ -16,3 +16,4 @@ MonoBehaviour:
   keyWords:
   - key: '#CS_CLASS_NAME#'
     comment: "\u7C7B\u540D"
+    Flags: 4

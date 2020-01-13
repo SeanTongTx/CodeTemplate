@@ -10,12 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5c87e68a5df40834d84162143c8093c4, type: 3}
-  m_Name: SeanLibEditorUXMLTemplate
+  m_Name: SeanLibDocCsTemplate
   m_EditorClassIdentifier: 
-  template: "<ui:UXML xmlns:ui=\"UnityEngine.UIElements\" xmlns:uie=\"UnityEditor.UIElements\">\n
-    <ui:Label text=\"This is Template Editor\"></ui:Label>\n</ui:UXML>\n"
+  template: "\r\nusing EditorPlus;\r\nusing SeanLib.Core;\r\nusing UnityEditor;\r\nusing
+    UnityEngine;\r\nusing UnityEngine.UIElements;\r\n\r\nnamespace SeanLib.CodeTemplate\r\n{\r\n  
+    [CustomSeanLibEditor(\"#CLASS_NAME#\",IsDoc=true)]\r\n    public class #CLASS_NAME#
+    : EditorMarkDownWindow\r\n    {\r\n    }\r\n}"
   keyWords:
   - key: '#CLASS_NAME#'
     comment: "\u6587\u4EF6\u540D"
     Flags: 4
-  FileNameTemplate: '#CLASS_NAME#.uxml'
+  ValueDic:
+    values: []
+  FileNameTemplate: '#CLASS_NAME#.cs'

@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeb8a21a3e273e04db746442d3377881, type: 3}
   m_Name: ScriptableObject
   m_EditorClassIdentifier: 
-  template: "using UnityEngine;\npublic class #CS_CLASS_NAME#: ScriptableObject\r\n{\r\n\r\n}"
+  template: "using UnityEngine;\n[CreateAssetMenu(fileName = \"#CS_CLASS_NAME#\",
+    menuName = \"#CS_CLASS_NAME#\")]\npublic class #CS_CLASS_NAME#: ScriptableObject\r\n{\r\n\r\n}"
   keyWords:
   - key: '#CS_CLASS_NAME#'
     comment: "\u7C7B\u540D"
+    Flags: 4
